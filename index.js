@@ -1,7 +1,7 @@
 const inquirer = require("inquirer")
 const mysql = require("mysql2")
 const table = require("console.table")
-const { allDepartments, allRoles } = require("./server")
+const { allDepartments, allRoles, allEmployees, addDepartment } = require("./server")
 
 // Connect to database
 const db = mysql.createConnection(
@@ -35,11 +35,11 @@ inquirer
                 console.log("View all roles")
                 break
             case ("View all employees"):
-                //call db.query prepared statement to view all employees
+                allEmployees()
                 console.log("View all employees")
                 break
             case ("Add a department"):
-                //call db.query prepared statement to add a department
+                addDepartment()
                 console.log("Add a department")
                 break
             case ("Add a role"):

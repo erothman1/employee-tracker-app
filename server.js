@@ -25,7 +25,7 @@ const allDepartments = () => {
 
 //To view all roles
 const allRoles = () => {
-    db.query("SELECT role.title AS `Job Title`, role.salary AS `Salary`, department.name AS `Department` FROM role LEFT JOIN department ON role.department_id = department.id ORDER BY department.name;", (err, result) => {
+    db.query("SELECT role.title AS `Job Title`, role.salary AS `Salary`, role.id AS `Role ID`, department.name AS `Department` FROM role LEFT JOIN department ON role.department_id = department.id ORDER BY department.name;", (err, result) => {
         if (err) {
             console.log(err);
         }
@@ -33,9 +33,42 @@ const allRoles = () => {
     })
 }
 
+const allEmployees = () => {
+    db.query("SELECT employees.id AS `Employee ID`, employees.first_name AS `First Name`, employees.last_name AS `Last Name`, role.title AS `Job Title`, department.name AS `Department`, role.salary AS `Salary`, employees.manager_id AS `Manager ID` FROM employees LEFT JOIN role ON employees.role_id = role.id LEFT JOIN department ON role.department_id = department.id;", (err, result) => {
+        if (err) {
+            console.log(err);
+        }
+        console.table(result);
+    })
+}
+
+const addDepartment = () => {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "What department would you like to add?",
+                name: "newDepartment"
+            }
+        ])
+        .then((response) => {
+            const { newDepartment } = response
+
+            db.query(`INSERT INTO department (name) VALUES (${newDepartment});`, (err, result) => {
+                if (err) {
+                    console.log(err);
+                }
+                console.table(result);
+            })
+
+        })
+}
+
 module.exports = {
     allDepartments,
-    allRoles
+    allRoles,
+    allEmployees,
+    addDepartment
 }
 
 
