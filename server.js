@@ -15,7 +15,7 @@ const db = mysql.createConnection(
 
 //To view all departments
 const allDepartments = () => {
-    db.query("SELECT * FROM department", (err, result) => {
+    db.query("SELECT name AS Department FROM department", (err, result) => {
         if (err) {
             console.log(err);
         }
@@ -25,7 +25,7 @@ const allDepartments = () => {
 
 //To view all roles
 const allRoles = () => {
-    db.query("SELECT * FROM role", (err, result) => {
+    db.query("SELECT role.title AS Job Title, role.salary AS Salary, role.department_id AS Department FROM role LEFT JOIN department ON role.department_id = department.id ORDER BY department.name;", (err, result) => {
         if (err) {
             console.log(err);
         }
