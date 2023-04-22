@@ -17,9 +17,9 @@ const db = mysql.createConnection(
 const allDepartments = () => {
     db.query("SELECT name AS Department FROM department", (err, result) => {
         if (err) {
-            console.log(err);
+            throw err
         }
-        console.table(result);
+        console.table(result)
     })
 }
 
@@ -27,18 +27,18 @@ const allDepartments = () => {
 const allRoles = () => {
     db.query("SELECT role.title AS `Job Title`, role.salary AS `Salary`, role.id AS `Role ID`, department.name AS `Department` FROM role LEFT JOIN department ON role.department_id = department.id ORDER BY department.name;", (err, result) => {
         if (err) {
-            console.log(err);
+            console.log(err)
         }
-        console.table(result);
+        console.table(result)
     })
 }
 
 const allEmployees = () => {
     db.query("SELECT employees.id AS `Employee ID`, employees.first_name AS `First Name`, employees.last_name AS `Last Name`, role.title AS `Job Title`, department.name AS `Department`, role.salary AS `Salary`, employees.manager_id AS `Manager ID` FROM employees LEFT JOIN role ON employees.role_id = role.id LEFT JOIN department ON role.department_id = department.id;", (err, result) => {
         if (err) {
-            console.log(err);
+            throw err
         }
-        console.table(result);
+        console.table(result)
     })
 }
 
@@ -54,11 +54,53 @@ const addDepartment = () => {
         .then((response) => {
             const { newDepartment } = response
 
-            db.query(`INSERT INTO department (name) VALUES (${newDepartment});`, (err, result) => {
+            db.query(`INSERT INTO department (name)
+            VALUES 
+                ("${newDepartment}");`, (err, result) => {
                 if (err) {
-                    console.log(err);
+                    throw err
                 }
-                console.table(result);
+                console.log(`Successfully added ${newDepartment}!`)
+            })
+
+        })
+}
+
+const addRole = () => {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "What is the role name?",
+                name: "roleName"
+            },
+            {
+                type: "input",
+                message: "What is the role's salary?",
+                name: "salary"
+            },
+            {
+                type: "input",
+                message: "What department is this role in?",
+                name: "department"
+            }
+        ])
+        .then((response) => {
+            const { roleName, salary, department } = response
+
+            db.query(`SELECT id FROM department WHERE name = ?`, [department], (err, result) => {
+                if (err) {
+                    throw err
+                }
+                
+                const departmentId = result[0].id 
+
+                db.query(`INSERT INTO role (title, salary, department_id) VALUE (?, ?, ?)`, [roleName, salary, departmentId], (err, result) => {
+                    if (err) {
+                        throw err
+                    }
+                    console.log(`Successfully added ${roleName}!`)
+                })
             })
 
         })
@@ -68,7 +110,8 @@ module.exports = {
     allDepartments,
     allRoles,
     allEmployees,
-    addDepartment
+    addDepartment,
+    addRole
 }
 
 
