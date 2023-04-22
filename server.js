@@ -106,12 +106,54 @@ const addRole = () => {
         })
 }
 
+const addEmployee = () => {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                message: "What is the employee's first name?",
+                name: "firstName"
+            },
+            {
+                type: "input",
+                message: "What is the employee's last name?",
+                name: "lastName"
+            },
+            {
+                type: "input",
+                message: "What is the employee's role?",
+                name: "role"
+            },
+            {
+                type: "input",
+                message: "Who is the employee's manager?",
+                name: "manager"
+            }
+        ])
+        .then((response) => {
+            const { firstName, lastName, role, manager } = response
+
+            db.query(`SELECT id FROM role WHERE title = ?`, [role], (err, result) => {
+
+                const roleId = result[0].id
+
+                db.query(`INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUE (?, ?, ?, ?)`, [firstName, lastName, roleId, null], (err, result) => {
+                    if (err) {
+                        throw err
+                    }
+                    console.log(`Successfully added ${firstName} ${lastName}!`)
+                })
+            })
+        })
+}
+
 module.exports = {
     allDepartments,
     allRoles,
     allEmployees,
     addDepartment,
-    addRole
+    addRole,
+    addEmployee
 }
 
 

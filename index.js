@@ -1,7 +1,7 @@
 const inquirer = require("inquirer")
 const mysql = require("mysql2")
 const table = require("console.table")
-const { allDepartments, allRoles, allEmployees, addDepartment, addRole } = require("./server")
+const { allDepartments, allRoles, allEmployees, addDepartment, addRole, addEmployee } = require("./server")
 
 // Connect to database
 const db = mysql.createConnection(
@@ -42,8 +42,7 @@ inquirer
                 addRole()
                 break
             case ("Add an employee"):
-                //call db.query prepared statement to add an employee
-                console.log("Add an employee")
+                addEmployee()
                 break
             case ("Update an employee"):
                 //call db.query prepared statement to update an employee
