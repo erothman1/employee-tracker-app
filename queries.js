@@ -33,6 +33,8 @@ const allRoles = () => {
     })
 }
 
+//To view all employees
+//TODO: get manager name to show up instead of manager id
 const allEmployees = () => {
     db.query("SELECT employees.id AS `Employee ID`, employees.first_name AS `First Name`, employees.last_name AS `Last Name`, role.title AS `Job Title`, department.name AS `Department`, role.salary AS `Salary`, employees.manager_id AS `Manager ID` FROM employees LEFT JOIN role ON employees.role_id = role.id LEFT JOIN department ON role.department_id = department.id;", (err, result) => {
         if (err) {
@@ -42,6 +44,7 @@ const allEmployees = () => {
     })
 }
 
+//To add a department
 const addDepartment = () => {
     inquirer
         .prompt([
@@ -66,6 +69,7 @@ const addDepartment = () => {
         })
 }
 
+//To add a role
 const addRole = () => {
     inquirer
         .prompt([
@@ -82,7 +86,7 @@ const addRole = () => {
             {
                 type: "input",
                 message: "What department is this role in?",
-                name: "department"
+                name: "department",
             }
         ])
         .then((response) => {
@@ -106,6 +110,8 @@ const addRole = () => {
         })
 }
 
+//Add employee
+//TODO: make it so manager name comes up instead of null
 const addEmployee = () => {
     inquirer
         .prompt([
@@ -147,13 +153,25 @@ const addEmployee = () => {
         })
 }
 
+//TODO: update employee role by selecting new employee from list of employee and then selecting role from list of roles
+const updateEmployee = () => {
+    // inquirer
+    //     .prompt([
+    //         {
+    //             type: "list",
+    //             message:
+    //         }
+    //     ])
+}
+
 module.exports = {
     allDepartments,
     allRoles,
     allEmployees,
     addDepartment,
     addRole,
-    addEmployee
+    addEmployee,
+    updateEmployee
 }
 
 
