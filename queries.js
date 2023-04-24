@@ -36,7 +36,7 @@ const allRoles = () => {
 //To view all employees
 //TODO: get manager name to show up instead of manager id
 const allEmployees = () => {
-    db.query("SELECT employees.id AS `Employee ID`, employees.first_name AS `First Name`, employees.last_name AS `Last Name`, role.title AS `Job Title`, department.name AS `Department`, role.salary AS `Salary`, employees.manager_id AS `Manager ID` FROM employees LEFT JOIN role ON employees.role_id = role.id LEFT JOIN department ON role.department_id = department.id;", (err, result) => {
+    db.query("SELECT employees.id AS `Employee ID`, employees.first_name AS `First Name`, employees.last_name AS `Last Name`, role.title AS `Job Title`, department.name AS `Department`, role.salary AS `Salary`, CONCAT(manager.first_name, manager.last_name) AS `Manager` FROM employees LEFT JOIN role ON employees.role_id = role.id LEFT JOIN department ON role.department_id = department.id LEFT JOIN employees manager ON manager.id = employees.manager_id;", (err, result) => {
         if (err) {
             throw err
         }
@@ -70,48 +70,93 @@ const addDepartment = () => {
 }
 
 //To add a role
+//TODO: get list of departments to choose from 
 const addRole = () => {
-    inquirer
-        .prompt([
-            {
-                type: "input",
-                message: "What is the role name?",
-                name: "roleName"
-            },
-            {
-                type: "input",
-                message: "What is the role's salary?",
-                name: "salary"
-            },
-            {
-                type: "input",
-                message: "What department is this role in?",
-                name: "department",
-            }
-        ])
-        .then((response) => {
-            const { roleName, salary, department } = response
-
-            db.query(`SELECT id FROM department WHERE name = ?`, [department], (err, result) => {
-                if (err) {
-                    throw err
+    db.query(`SELECT * FROM department`, (err, result) => {
+        console.log(result)
+        inquirer
+            .prompt([
+                {
+                    type: "input",
+                    message: "What is the role name?",
+                    name: "roleName"
+                },
+                {
+                    type: "input",
+                    message: "What is the role's salary?",
+                    name: "salary"
+                },
+                {
+                    type: "rawList",
+                    message: "What department is this role in?",
+                    name: "department",
+                    choices: result.map((department) => `${department.name}`)
                 }
-                
-                const departmentId = result[0].id 
+            ])
+            .then((response) => {
+                const { roleName, salary, department } = response
 
-                db.query(`INSERT INTO role (title, salary, department_id) VALUE (?, ?, ?)`, [roleName, salary, departmentId], (err, result) => {
+                db.query(`SELECT id FROM department WHERE name = ?`, [department], (err, result) => {
                     if (err) {
                         throw err
                     }
-                    console.log(`Successfully added ${roleName}!`)
-                })
-            })
 
-        })
+                    const departmentId = result[0].id
+
+                    db.query(`INSERT INTO role (title, salary, department_id) VALUE (?, ?, ?)`, [roleName, salary, departmentId], (err, result) => {
+                        if (err) {
+                            throw err
+                        }
+                        console.log(`Successfully added ${roleName}!`)
+                    })
+                })
+
+            })
+    })
 }
+
+// inquirer
+//     .prompt([
+//         {
+//             type: "input",
+//             message: "What is the role name?",
+//             name: "roleName"
+//         },
+//         {
+//             type: "input",
+//             message: "What is the role's salary?",
+//             name: "salary"
+//         },
+//         {
+//             type: "input",
+//             message: "What department is this role in?",
+//             name: "department",
+//         }
+//     ])
+//     .then((response) => {
+//         const { roleName, salary, department } = response
+
+//         db.query(`SELECT id FROM department WHERE name = ?`, [department], (err, result) => {
+//             if (err) {
+//                 throw err
+//             }
+
+//             const departmentId = result[0].id 
+
+//             db.query(`INSERT INTO role (title, salary, department_id) VALUE (?, ?, ?)`, [roleName, salary, departmentId], (err, result) => {
+//                 if (err) {
+//                     throw err
+//                 }
+//                 console.log(`Successfully added ${roleName}!`)
+//             })
+//         })
+
+//     })
+
 
 //Add employee
 //TODO: make it so manager name comes up instead of null
+//TODO: get list of roles to choose from
 const addEmployee = () => {
     inquirer
         .prompt([
