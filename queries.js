@@ -187,13 +187,67 @@ const addEmployee = () => {
 
 //TODO: update employee role by selecting new employee from list of employee and then selecting role from list of roles
 const updateEmployee = () => {
-    // inquirer
-    //     .prompt([
-    //         {
-    //             type: "list",
-    //             message:
-    //         }
-    //     ])
+
+    const employeeArr = () => {
+        return new Promise((resolve, reject) => {
+            db.query(`SELECT * FROM employees`, (err, result) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    const resultArr = result.map(employees => `${employees.first_name} ${employees.last_name}`)
+                    resolve(resultArr)
+                }
+            })
+        })
+    }
+
+    const roleArr = () => {
+        return new Promise((resolve, reject) => {
+            db.query(`SELECT * FROM role`, (err, result) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    const resultArr = result.map(role => `${role.title}`)
+                    resolve(resultArr)
+                }
+            })
+        })
+    }
+
+    inquirer
+        .prompt([
+            {
+                type: "rawlist",
+                message: "Select an employee to update",
+                name: "employee",
+                choices: async () => await employeeArr()
+            },
+            {
+                type: "rawlist",
+                message: "Choose employee's new role",
+                name: "newRole",
+                choices: async () => await roleArr()
+            }
+        ])
+        .then((response) => {
+            const { employee, newRole } = response
+            
+            db.query(`SELECT id FROM role WHERE title = ?`, [newRole], (err, result) => {
+                if (err) {
+                    throw err
+                }
+                const roleId = result[0].id
+
+                db.query(`UPDATE employees SET role_id = ? WHERE CONCAT(first_name, ' ', last_name) = ?`, [roleId, employee], (err, result) => {
+                    if (err) {
+                        throw err
+                    }
+
+                    console.log(`${employee} role has been updated!`)
+                })
+            })
+        })
+
 }
 
 module.exports = {

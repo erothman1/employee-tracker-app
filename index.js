@@ -53,7 +53,7 @@ const init = () => {
                 break
             case ("Update an employee"):
                 updateEmployee()
-                setTimeout(init, 1000)
+                setTimeout(init, 15000)
                 break
             default: 
                 return
