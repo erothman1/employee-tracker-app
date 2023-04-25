@@ -13,7 +13,7 @@ node index.js
 
 Here is a video of me walking through the steps to use this application
 
-![Walk Through](./images/screenRecording.gif)
+![Walk Through](./assets/images/employee-tracker-walkthrough.gif)
 
 
 ## How to Contribute 

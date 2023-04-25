@@ -58,7 +58,7 @@ const init = () => {
                 break
             case ("Add a department"):
                 addDepartment()
-                setTimeout(init, 1000)
+                setTimeout(init, 8000)
                 break
             case ("Add a role"):
                 addRole()
@@ -70,7 +70,7 @@ const init = () => {
                 break
             case ("Update an employee"):
                 updateEmployee()
-                setTimeout(init, 15000)
+                setTimeout(init, 8000)
                 break
             default: 
                 return
