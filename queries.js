@@ -185,7 +185,6 @@ const addEmployee = () => {
     })
 }
 
-//TODO: update employee role by selecting new employee from list of employee and then selecting role from list of roles
 const updateEmployee = () => {
 
     const employeeArr = () => {
