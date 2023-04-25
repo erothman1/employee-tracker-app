@@ -14,6 +14,23 @@ const db = mysql.createConnection(
     console.log(`Connected to the company_db database.`)
    )
 
+const art = () => {
+    console.log(`
+    ███████╗███╗░░░███╗██████╗░██╗░░░░░░█████╗░██╗░░░██╗███████╗███████╗  
+    ██╔════╝████╗░████║██╔══██╗██║░░░░░██╔══██╗╚██╗░██╔╝██╔════╝██╔════╝  
+    █████╗░░██╔████╔██║██████╔╝██║░░░░░██║░░██║░╚████╔╝░█████╗░░█████╗░░  
+    ██╔══╝░░██║╚██╔╝██║██╔═══╝░██║░░░░░██║░░██║░░╚██╔╝░░██╔══╝░░██╔══╝░░  
+    ███████╗██║░╚═╝░██║██║░░░░░███████╗╚█████╔╝░░░██║░░░███████╗███████╗  
+    ╚══════╝╚═╝░░░░░╚═╝╚═╝░░░░░╚══════╝░╚════╝░░░░╚═╝░░░╚══════╝╚══════╝  
+    
+    ████████╗██████╗░░█████╗░░█████╗░██╗░░██╗███████╗██████╗░
+    ╚══██╔══╝██╔══██╗██╔══██╗██╔══██╗██║░██╔╝██╔════╝██╔══██╗
+    ░░░██║░░░██████╔╝███████║██║░░╚═╝█████═╝░█████╗░░██████╔╝
+    ░░░██║░░░██╔══██╗██╔══██║██║░░██╗██╔═██╗░██╔══╝░░██╔══██╗
+    ░░░██║░░░██║░░██║██║░░██║╚█████╔╝██║░╚██╗███████╗██║░░██║
+    ░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚═╝░╚════╝░╚═╝░░╚═╝╚══════╝╚═╝░░╚═╝`)
+}
+
 const init = () => {
     inquirer
     .prompt([
@@ -61,45 +78,6 @@ const init = () => {
     })
 }
 
+art()
 init()
-
-   
-// inquirer
-//     .prompt([
-//         {
-//             type: "list",
-//             message: "What would you like to do?",
-//             name: "action",
-//             choices: ["View all departments", "View all roles", "View all employees", "Add a department", "Add a role", "Add an employee", "Update an employee"]
-//         }
-//     ])
-//     .then((response) => {
-//         const {action} = response
-//         switch(action) {
-//             case ("View all departments"):
-//                 allDepartments()
-//                 break
-//             case ("View all roles"):
-//                 allRoles()
-//                 break
-//             case ("View all employees"):
-//                 allEmployees()
-//                 break
-//             case ("Add a department"):
-//                 addDepartment()
-//                 break
-//             case ("Add a role"):
-//                 addRole()
-//                 break
-//             case ("Add an employee"):
-//                 addEmployee()
-//                 break
-//             case ("Update an employee"):
-//                 updateEmployee()
-//                 break
-//             default: 
-//                 console.log("Oops error")
-//                 break
-//         }
-//     })
 
