@@ -49,7 +49,7 @@ const init = () => {
                 break
             case ("Add an employee"):
                 addEmployee()
-                setTimeout(init, 10000)
+                setTimeout(init, 15000)
                 break
             case ("Update an employee"):
                 updateEmployee()
